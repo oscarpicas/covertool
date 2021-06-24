@@ -19,7 +19,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/dlespiau/covertool/pkg/exit"
+	"github.com/makholm/covertool/pkg/exit"
 )
 
 // add is tested with a unit test

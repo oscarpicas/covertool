@@ -21,8 +21,8 @@ import (
 	"path"
 	"testing"
 
-	"github.com/dlespiau/covertool/pkg/cover"
-	"github.com/dlespiau/covertool/pkg/exit"
+	"github.com/makholm/covertool/pkg/cover"
+	"github.com/makholm/covertool/pkg/exit"
 )
 
 func TestAdd(t *testing.T) {
