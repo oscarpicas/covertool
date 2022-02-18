@@ -1,4 +1,5 @@
 // Copyright (c) 2017 Intel Corporation
+// Copyright (c) 2022 Oscar Picas
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +18,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 func percent(active, total int64) float64 {
@@ -29,11 +30,11 @@ func percent(active, total int64) float64 {
 
 func report(ctx *cli.Context) error {
 	args := ctx.Args()
-	if len(args) != 1 {
-		return fmt.Errorf("expecting one argument, got %d", len(args))
+	if args.Len() != 1 {
+		return fmt.Errorf("expecting one argument, got %d", args.Len())
 	}
 
-	profiles, err := ParseProfiles(args[0])
+	profiles, err := ParseProfiles(args.Get(0))
 	if err != nil {
 		return err
 	}

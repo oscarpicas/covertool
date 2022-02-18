@@ -1,4 +1,5 @@
 // Copyright (c) 2017 Intel Corporation
+// Copyright (c) 2022 Oscar Picas
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +19,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 const name = "covertool"
@@ -29,10 +30,10 @@ func main() {
 	app.Name = name
 	app.Usage = usage
 	app.Version = "0.1.0"
-	app.Commands = []cli.Command{
-		mergeCommand,
-		reportCommand,
-		sortCommand,
+	app.Commands = []*cli.Command{
+		&mergeCommand,
+		&reportCommand,
+		&sortCommand,
 	}
 
 	if err := app.Run(os.Args); err != nil {

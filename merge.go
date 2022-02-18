@@ -1,4 +1,5 @@
 // Copyright (c) 2017 Intel Corporation
+// Copyright (c) 2022 Oscar Picas
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,15 +16,14 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"strings"
 
-	"bufio"
-
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 type mergeContext struct {
@@ -93,8 +93,8 @@ func (ctx *mergeContext) addFile(filename string) error {
 
 func merge(ctx *cli.Context) error {
 	args := ctx.Args()
-	if len(args) < 2 {
-		return fmt.Errorf("expecting at least two arguments, got %d", len(args))
+	if args.Len() < 2 {
+		return fmt.Errorf("expecting at least two arguments, got %d", args.Len())
 	}
 	aggregatedProfile, err := ioutil.TempFile("", "cover-tool-")
 	if err != nil {
@@ -109,7 +109,7 @@ func merge(ctx *cli.Context) error {
 		out: aggregatedProfile,
 	}
 
-	for _, arg := range args {
+	for _, arg := range args.Slice() {
 		if err := parse.addFile(arg); err != nil {
 			return err
 		}
@@ -136,7 +136,7 @@ var mergeCommand = cli.Command{
 	ArgsUsage: "profile [profile]*",
 	Action:    merge,
 	Flags: []cli.Flag{
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "output, o",
 			Value: "-",
 			Usage: "output file",

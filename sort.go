@@ -1,4 +1,5 @@
 // Copyright (c) 2017 Intel Corporation
+// Copyright (c) 2022 Oscar Picas
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,18 +18,18 @@ package main
 import (
 	"fmt"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 func doSort(ctx *cli.Context) error {
 	args := ctx.Args()
-	if len(args) != 1 {
-		return fmt.Errorf("expecting one argument, got %d", len(args))
+	if args.Len() != 1 {
+		return fmt.Errorf("expecting one argument, got %d", args.Len())
 	}
 
 	// Just need to parse the profile and write it back. The parsing function is
 	// sorting the blocks.
-	profiles, err := ParseProfiles(args[0])
+	profiles, err := ParseProfiles(args.Get(0))
 	if err != nil {
 		return err
 	}
@@ -48,7 +49,7 @@ var sortCommand = cli.Command{
 	ArgsUsage: "profile",
 	Action:    doSort,
 	Flags: []cli.Flag{
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "output, o",
 			Value: "-",
 			Usage: "output file",

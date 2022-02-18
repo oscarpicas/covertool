@@ -174,7 +174,7 @@ func (p *Profile) Boundaries(src []byte) (boundaries []Boundary) {
 			return b
 		}
 		if max <= 1 {
-			b.Norm = 0.8 // Profile is in"set" mode; we want a heat map. Use cov8 in the CSS.
+			b.Norm = 0.8 // Profile is in "set" mode; we want a heat map. Use cov8 in the CSS.
 		} else if count > 0 {
 			b.Norm = math.Log(float64(count)) / divisor
 		}

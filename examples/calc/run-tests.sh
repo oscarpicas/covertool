@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# To run in the github.com/makholm/covertool/examples/calc directory
+# To run in the github.com/oscarpicas/covertool/examples/calc directory
 
 function fatal() {
     echo $1
     exit 1
 }
 
-go install github.com/makholm/covertool
+go install github.com/oscarpicas/covertool
 
 echo "• Build the coverage-instrumented version of calc"
 go test -o calc -covermode count &> /dev/null

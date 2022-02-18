@@ -1,4 +1,5 @@
 // Copyright (c) 2017 Intel Corporation
+// Copyright (c) 2022 Oscar Picas
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,8 +23,7 @@ import (
 	"testing"
 )
 
-// ParseAndStriptestFlags runs flag.Parse to parse the standard flags of a test
-// binary and remove them from os.Args.
+// ParseAndStripTestFlags runs flag.Parse to parse the standard flags of a test binary and remove them from os.Args.
 func ParseAndStripTestFlags() {
 	// Parse the command line using the stdlib flag package so the flags defined
 	// in the testing package get populated.
@@ -47,12 +47,12 @@ type dummyTestDeps func(pat, str string) (bool, error)
 func (d dummyTestDeps) MatchString(pat, str string) (bool, error)   { return false, nil }
 func (d dummyTestDeps) StartCPUProfile(io.Writer) error             { return nil }
 func (d dummyTestDeps) StopCPUProfile()                             {}
-func (f dummyTestDeps) StartTestLog(w io.Writer)                    {}
-func (f dummyTestDeps) StopTestLog() error                          { return nil }
+func (d dummyTestDeps) StartTestLog(w io.Writer)                    {}
+func (d dummyTestDeps) StopTestLog() error                          { return nil }
 func (d dummyTestDeps) WriteHeapProfile(io.Writer) error            { return nil }
 func (d dummyTestDeps) WriteProfileTo(string, io.Writer, int) error { return nil }
-func (f dummyTestDeps) ImportPath() string                          { return "" }
-func (f dummyTestDeps) SetPanicOnExit0(v bool)                      {}
+func (d dummyTestDeps) ImportPath() string                          { return "" }
+func (d dummyTestDeps) SetPanicOnExit0(v bool)                      {}
 
 // FlushProfiles flushes test profiles to disk. It works by build and executing
 // a dummy list of 1 test. This is to ensure we execute the M.after() function

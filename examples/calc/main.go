@@ -1,4 +1,5 @@
 // Copyright (c) 2017 Intel Corporation
+// Copyright (c) 2022 Oscar Picas
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +20,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/makholm/covertool/pkg/exit"
+	"github.com/oscarpicas/covertool/pkg/exit"
 )
 
 // add is tested with a unit test

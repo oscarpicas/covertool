@@ -1,4 +1,5 @@
 // Copyright (c) 2017 Damien Lespiau
+// Copyright (c) 2022 Oscar Picas
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +17,7 @@ package main
 
 import (
 	"io"
+	"log"
 	"os"
 )
 
@@ -29,7 +31,12 @@ func WriteProfilesToFile(filename string, profiles []*Profile) error {
 		if err != nil {
 			return err
 		}
-		defer f.Close()
+		defer func(f *os.File) {
+			err := f.Close()
+			if err != nil {
+				log.Printf("failure closing file: %s\n", f.Name())
+			}
+		}(f)
 		out = f
 	}
 
