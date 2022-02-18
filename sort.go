@@ -50,7 +50,7 @@ var sortCommand = cli.Command{
 	Action:    doSort,
 	Flags: []cli.Flag{
 		&cli.StringFlag{
-			Name:  "output, o",
+			Name:  "output",
 			Value: "-",
 			Usage: "output file",
 		},

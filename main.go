@@ -29,7 +29,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = name
 	app.Usage = usage
-	app.Version = "0.1.0"
+	app.Version = "0.4.1"
 	app.Commands = []*cli.Command{
 		&mergeCommand,
 		&reportCommand,
@@ -37,6 +37,9 @@ func main() {
 	}
 
 	if err := app.Run(os.Args); err != nil {
-		fmt.Fprintf(os.Stderr, "%v", err)
+		_, err := fmt.Fprintf(os.Stderr, "%v", err)
+		if err != nil {
+			os.Exit(2)
+		}
 	}
 }

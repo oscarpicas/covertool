@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"os"
 	"strings"
 
@@ -63,7 +64,12 @@ func (ctx *mergeContext) addFile(filename string) error {
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+			log.Printf("problem closing file: %s", f.Name())
+		}
+	}(f)
 
 	// Parse the coverage mode.
 	scanner := bufio.NewScanner(f)
@@ -78,15 +84,27 @@ func (ctx *mergeContext) addFile(filename string) error {
 	}
 	if ctx.mode == "" {
 		ctx.mode = mode
-		ctx.out.Write([]byte(line))
-		ctx.out.Write([]byte("\n"))
+		_, err := ctx.out.Write([]byte(line))
+		if err != nil {
+			return fmt.Errorf("merge: problem writing buffer: %w", err)
+		}
+		_, err = ctx.out.Write([]byte("\n"))
+		if err != nil {
+			return fmt.Errorf("merge: problem writing buffer: %w", err)
+		}
 	} else if !compatibleModes(ctx.mode, mode) {
 		return fmt.Errorf("merge: inconsistency in the profiles modes, got both %v and %v", ctx.mode, mode)
 	}
 
 	// Copy the list of block information after skipping the line we just parsed.
-	f.Seek(int64(len([]byte(line))+1), 0)
-	io.Copy(ctx.out, f)
+	_, err = f.Seek(int64(len([]byte(line))+1), 0)
+	if err != nil {
+		return fmt.Errorf("merge: internal problem: %w", err)
+	}
+	_, err = io.Copy(ctx.out, f)
+	if err != nil {
+		return fmt.Errorf("merge: internal copy problem: %w", err)
+	}
 
 	return nil
 }
@@ -101,8 +119,11 @@ func merge(ctx *cli.Context) error {
 		return err
 	}
 	defer func() {
-		aggregatedProfile.Close()
-		os.Remove(aggregatedProfile.Name())
+		_ = aggregatedProfile.Close()
+		err := os.Remove(aggregatedProfile.Name())
+		if err != nil {
+			log.Println("problem cleaning temporary files")
+		}
 	}()
 
 	parse := &mergeContext{
@@ -137,7 +158,7 @@ var mergeCommand = cli.Command{
 	Action:    merge,
 	Flags: []cli.Flag{
 		&cli.StringFlag{
-			Name:  "output, o",
+			Name:  "output",
 			Value: "-",
 			Usage: "output file",
 		},

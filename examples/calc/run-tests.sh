@@ -41,5 +41,5 @@ echo "• Result: `covertool report error2.cov`"
 
 echo
 echo "• Merge all coverage profiles and report the total coverage"
-covertool merge -o all.cov unit-tests.cov sub.cov error1.cov error2.cov
+covertool merge --output all.cov unit-tests.cov sub.cov error1.cov error2.cov
 covertool report all.cov

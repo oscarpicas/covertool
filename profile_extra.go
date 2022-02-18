@@ -15,7 +15,7 @@
 
 // This files contains profile-related functions. They are not in profile.go as
 // that file taken from the go source code and have it stay pristine makes
-// synching with upstream easier.
+// syncing with upstream easier.
 
 package main
 
@@ -32,14 +32,20 @@ func WriteProfiles(w io.Writer, profiles []*Profile) error {
 
 	// We've checked that all input profiles have compatible modes, so we just
 	// write out the first one.
-	fmt.Fprintf(w, "mode: %s\n", profiles[0].Mode)
+	_, err := fmt.Fprintf(w, "mode: %s\n", profiles[0].Mode)
+	if err != nil {
+		return err
+	}
 	for _, profile := range profiles {
 		blocks := profile.Blocks
 		for i := range profile.Blocks {
-			fmt.Fprintf(w, "%s:%d.%d,%d.%d %d %d\n", profile.FileName,
+			_, err := fmt.Fprintf(w, "%s:%d.%d,%d.%d %d %d\n", profile.FileName,
 				blocks[i].StartLine, blocks[i].StartCol,
 				blocks[i].EndLine, blocks[i].EndCol,
 				blocks[i].NumStmt, blocks[i].Count)
+			if err != nil {
+				return err
+			}
 		}
 	}
 

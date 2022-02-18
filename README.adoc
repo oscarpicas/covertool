@@ -20,17 +20,17 @@ this https://damien.lespiau.name/posts/2017-01-29-building-and-using-coverage-in
 This repository contains support packages and tools to produce
 and use coverage-instrumented Go programs.
 
-Package https://github.com/dlespiau/covertool/tree/master/pkg/cover[cover]
+Package https://github.com/oscarpicas/covertool/tree/master/pkg/cover[cover]
 can be used to build instrumented programs.
 
-Package https://github.com/dlespiau/covertool/tree/master/pkg/exit[exit]
+Package https://github.com/oscarpicas/covertool/tree/master/pkg/exit[exit]
 is an atexit implementation.
 
 The `covertool` utility can merge profiles produced by different runs of the
 same binary and display the resulting code coverage:
 
 ----
-$ go install github.com/dlespiau/covertool
+$ go install github.com/oscarpicas/covertool
 $ covertool merge -o all.go unit-tests.cov usecase1.cov usecase2.cov error1.cov error2.cov ...
 $ covertool report all.go
 coverage: 92.9% of statements
@@ -40,14 +40,14 @@ coverage: 92.9% of statements
 Finally, the `example/calc` directory contains a fully working example:
 
 ----
-$ cd $GOPATH/src/github.com/dlespiau/covertool/examples/calc
+$ cd $GOPATH/src/github.com/oscarpicas/covertool/examples/calc
 $ ./run-tests.sh 
 • Build the coverage-instrumented version of calc
 
 • Run the unit tests
 PASS
 coverage: 7.1% of statements
-ok  	github.com/dlespiau/covertool/examples/calc	0.003s
+ok  	github.com/dlespiau/oscarpicas/examples/calc	0.003s
 
 • Cover the sub() function
 • Result: coverage: 57.1% of statements

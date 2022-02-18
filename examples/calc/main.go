@@ -36,7 +36,10 @@ func sub(a, b int) int {
 // The error paths in main are tested by invoking calc.
 func main() {
 	if len(os.Args) != 4 {
-		fmt.Fprintf(os.Stderr, "expected 3 arguments, got %d\n", len(os.Args)-1)
+		_, err := fmt.Fprintf(os.Stderr, "expected 3 arguments, got %d\n", len(os.Args)-1)
+		if err != nil {
+			exit.Exit(2)
+		}
 		exit.Exit(1)
 	}
 
@@ -51,7 +54,10 @@ func main() {
 	case "sub":
 		op = sub
 	default:
-		fmt.Fprintf(os.Stderr, "unknown operation: %s\n", os.Args[1])
+		_, err := fmt.Fprintf(os.Stderr, "unknown operation: %s\n", os.Args[1])
+		if err != nil {
+			exit.Exit(2)
+		}
 		exit.Exit(1)
 	}
 

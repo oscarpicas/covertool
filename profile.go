@@ -11,6 +11,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"math"
 	"os"
 	"regexp"
@@ -46,7 +47,12 @@ func ParseProfiles(fileName string) ([]*Profile, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer pf.Close()
+	defer func(pf *os.File) {
+		err := pf.Close()
+		if err != nil {
+			log.Printf("failure closing file: %s\n", pf.Name())
+		}
+	}(pf)
 
 	files := make(map[string]*Profile)
 	buf := bufio.NewReader(pf)
